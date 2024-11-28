@@ -1,0 +1,31 @@
+# Visual Studio 관련 파일 및 폴더 무시
+.vs/
+question1/.vs/
+
+# 빌드 아티팩트 무시 (Debug, Release 폴더 및 컴파일된 파일들)
+question1/x64/
+question1/GLIM_report/x64/
+question1/GLIM_report/x86/
+Debug/
+Release/
+
+# Visual Studio 임시 파일 무시
+*.ipch
+*.obj
+*.pch
+*.log
+*.tlog
+*.idb
+*.pdb
+*.tmp
+*.VC.opendb
+*.VC.db
+*.db
+
+# 실행 파일 및 DLL 무시
+*.exe
+*.dll
+*.lib
+
+# Visual Studio 솔루션 파일 제외
+!question1/GLIM_report.sln
