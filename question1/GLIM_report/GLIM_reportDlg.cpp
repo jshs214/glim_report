@@ -110,7 +110,6 @@ BOOL CGLIMreportDlg::OnInitDialog()
 	// setting dialog pos
 	SetWindowPos(NULL, 0, 0, m_dScreenWidth, m_dScreenHeight, SWP_NOMOVE);
 
-
 	SetIcon(m_hIcon, TRUE);
 	SetIcon(m_hIcon, FALSE);
 
@@ -136,7 +135,7 @@ BOOL CGLIMreportDlg::OnInitDialog()
 	m_LayoutViewImage.SetWindowPos(NULL, m_sViewImageCoord.nStartX, m_sViewImageCoord.nStartY,
 		m_sViewImageCoord.dWidth, m_sViewImageCoord.dHeight, SWP_NOZORDER | SWP_NOACTIVATE);
 
-
+	
 	SetWindowText(_T("GLIM SW REPORT"));
 
 
@@ -232,9 +231,21 @@ BOOL CGLIMreportDlg::DestroyWindow()
 
 bool CGLIMreportDlg::ParamCheck() {
 
-	if(GetFileAttributes(SAVE_PATH) == INVALID_FILE_ATTRIBUTES)
-		CreateDirectory(SAVE_PATH, NULL);
-
+	// DIR ./save/
+	if(GetFileAttributes(PATH_SAVEBMP) == INVALID_FILE_ATTRIBUTES)
+		CreateDirectory(PATH_SAVEBMP, NULL);
+	// DIR ./save/draw
+	if (GetFileAttributes(PATH_DRAWBMP) == INVALID_FILE_ATTRIBUTES)
+		CreateDirectory(PATH_DRAWBMP, NULL);
+	// DIR ./save/action
+	if (GetFileAttributes(PATH_ACTIONBMP) == INVALID_FILE_ATTRIBUTES)
+		CreateDirectory(PATH_ACTIONBMP, NULL);
+	// DIR ./save/random
+	if (GetFileAttributes(PATH_RANDOMBMP) == INVALID_FILE_ATTRIBUTES)
+		CreateDirectory(PATH_RANDOMBMP, NULL);
+	// DIR ./log/
+	if (GetFileAttributes(PATH_LOG) == INVALID_FILE_ATTRIBUTES)
+		CreateDirectory(PATH_LOG, NULL);
 
 	return true;
 }
@@ -253,7 +264,11 @@ void CGLIMreportDlg::Draw_Circle() {
 	m_pViewImage->SetCImage();
 	m_pViewImage->DrawCircle(nRadius);
 
-	m_pViewImage->SaveCImage(_T("draw.bmp" ));
+	CString cstr;
+	cstr.Format(PATH_DRAWBMP + _T("%04d.bmp"), 1);
+
+	CString cstrLog = GetTime() + cstr +_T("draw Success");
+	m_pViewInfo->WriteLog(cstrLog);
 }
 
 void CGLIMreportDlg::MoveCircle_ImageView() {
@@ -265,25 +280,32 @@ void CGLIMreportDlg::MoveCircle_ImageView() {
 	while (m_pViewImage->GetCircleMoving()) {
 		m_pViewImage->MoveCircle();
 
-		CString cNum;
-		cNum.Format(_T("%d"), cnt);	cnt++;
+		CString cstr;
+		cstr.Format(PATH_ACTIONBMP + _T("%04d.bmp"), cnt);	
+		cnt++;
+
 		
-		CString cstr = SAVE_PATH + cNum + _T(".bmp");
 		m_pViewImage->SaveCImage(cstr);
+		CString cstrLog = GetTime() + cstr + _T("Action Success");
+		m_pViewInfo->WriteLog(cstrLog);
 	}
 }
 
 void CGLIMreportDlg::Draw_Random(int count) {
 	m_pViewImage->SetCImage();
+	GetTime();
+
 	for (int i = 0; i < count; i++) {
 		m_pViewImage->DrawRandomCircle();
 
-		CString cNum;
-		cNum.Format(_T("%d"), i);
-		
-		CString cstr = SAVE_PATH + cNum + _T(".bmp");
+		CString cstr;
+		cstr.Format(PATH_RANDOMBMP + _T("%04d.bmp"), i);
+
 		m_pViewImage->SaveCImage(cstr);
-		Sleep(100);
+
+		CString cstrLog = GetTime() + cstr + _T("Raondom Success");
+		m_pViewInfo->WriteLog(cstrLog);
+		Sleep(100);	//delay
 	}
 }
 
@@ -297,6 +319,13 @@ void CGLIMreportDlg::OpenBmp(CString cstrPath) {
 	wP = m_pViewImage->GetCircleOpenRadius();
 	::SendMessage(m_pViewInfo->m_hWnd, WM_OPEN_RADIUS, wP, NULL);
 }
+
+CString CGLIMreportDlg::GetTime() {
+	CTime currentTime = CTime::GetCurrentTime();
+	CString timeString = currentTime.Format(_T("[%Y-%m-%d %H:%M:%S] "));
+	return timeString;
+}
+
 
 void CGLIMreportDlg::OnTimer(UINT_PTR nIDEvent)
 {

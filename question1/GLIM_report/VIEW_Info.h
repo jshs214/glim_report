@@ -15,6 +15,7 @@ public:
 	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	virtual void OnInitialUpdate();
 
+	void WriteLog(CString cstr);
 
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_VIEWINFO };
@@ -64,8 +65,6 @@ private:
 	CEdit m_editRandom;
 	CButton m_btnRandom;
 
-
-
 	CStatic m_staticGroupOpen;
 
 	CStatic m_staticFileName;
@@ -76,9 +75,13 @@ private:
 	CStatic m_staticCircleRadius;
 	CEdit m_editCircleRadius;
 
+	CStatic m_staticLog;
+	CEdit m_editLog;
+	
 
 public:
 	afx_msg void OnBnClickedButtonRandom();
+	virtual BOOL DestroyWindow();
 };
 
 

@@ -18,7 +18,13 @@ using namespace std;
 #include <iostream>
 #include <string>
 
-const CString SAVE_PATH = _T("./BMP/");
+const CString PATH_SAVEBMP = _T("./BMP/");
+const CString PATH_DRAWBMP = PATH_SAVEBMP + _T("DRAW/");
+const CString PATH_ACTIONBMP = PATH_SAVEBMP + _T("ACTION/");
+const CString PATH_RANDOMBMP = PATH_SAVEBMP + _T("RANDOM/");
+const CString PATH_LOG = _T("./LOG/");
+const CString FILE_LOG = PATH_LOG + _T("OperatingLog.txt");
+
 
 const int DevelopScreenWidth = 2560;
 const int DevelopScreenHeight = 1440;

@@ -61,7 +61,7 @@ private:
 
 	// x, y
 	pos m_nCirclePos1 = { 0,0 };	// start
-	pos m_nCirclePos2 = { 0,0 };	// end
+	pos m_nCirclePos2 = { 100,100 };	// end
 	pos m_nCircleOpenPos;			// Open Circle의 중심좌표
 	int m_nCircleOpenRadius;
 

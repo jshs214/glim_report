@@ -62,6 +62,10 @@ void VIEW_Info::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_OPENCIRCLE, m_editCirclePos);
 	DDX_Control(pDX, IDC_STATIC_OpenRadius, m_staticCircleRadius);
 	DDX_Control(pDX, IDC_EDIT_OPENRadius, m_editCircleRadius);
+
+	DDX_Control(pDX, IDC_STATIC_GroupLog, m_staticLog);
+	DDX_Control(pDX, IDC_EDIT_LOG, m_editLog);
+	
 }
 
 BEGIN_MESSAGE_MAP(VIEW_Info, CFormView)
@@ -123,10 +127,10 @@ void VIEW_Info::OnInitialUpdate()
 	int nCtrlMarginX = 5 * dResolutionRatioX;
 	int nCtrlMarginY = 8 * dResolutionRatioY;
 
-	// [Static] GroupBox
+	// [GroupBox] Setting
 	int nStaticGroupStartX = 5 * dResolutionRatioX;
 	int nStaticGroupStartY = 5 * dResolutionRatioY;
-	int nStaticGroupWidth = m_dScreenWidth - nStaticGroupStartX *2;
+	int nStaticGroupWidth = m_dScreenWidth - nStaticGroupStartX *3;
 	int nStaticGroupHeight = 270 * dResolutionRatioY;
 	m_staticGroup.SetWindowPos(NULL, nStaticGroupStartX, nStaticGroupStartY,
 		nStaticGroupWidth, nStaticGroupHeight, SWP_NOZORDER | SWP_NOACTIVATE);
@@ -258,7 +262,7 @@ void VIEW_Info::OnInitialUpdate()
 	// [GroupBox] Open
 	int nStaticGroupOpenX = 5 * dResolutionRatioX;
 	int nStaticGroupOpenY = nStaticRandomY + nButtonActionHeight + nButtonMarginY *6;
-	int nStaticGroupOpenWidth = m_dScreenWidth - nStaticGroupStartX * 2;
+	int nStaticGroupOpenWidth = m_dScreenWidth - nStaticGroupStartX * 3;
 	int nStaticGroupOpenHeight = 130 * dResolutionRatioY;
 	m_staticGroupOpen.SetWindowPos(NULL, nStaticGroupOpenX, nStaticGroupOpenY,
 		nStaticGroupOpenWidth, nStaticGroupOpenHeight, SWP_NOZORDER | SWP_NOACTIVATE);
@@ -273,7 +277,7 @@ void VIEW_Info::OnInitialUpdate()
 	// [Edit] Open
 	int nEditOpenX = nStaticFnX + nStaticFnWidth;
 	int nEditOpenY = nStaticRandomY + (nButtonActionHeight * 2) + nButtonMarginY * 6;
-	int nEditOpenWidth = (n3Width / 3) * 2 - nCtrlMarginX * 16;
+	int nEditOpenWidth =  ( (n3Width / 3) * 2 - nCtrlMarginX * 16) *dResolutionRatioX;
 	int nEditOpenHeight = nCtrlHeightSize * dResolutionRatioY;
 	m_editOpen.SetWindowPos(NULL, nEditOpenX, nEditOpenY,
 		nEditOpenWidth, nEditOpenHeight, SWP_NOZORDER | SWP_NOACTIVATE);
@@ -295,7 +299,7 @@ void VIEW_Info::OnInitialUpdate()
 	// [Edit] CirclePos
 	int nEditCirclePosX = nStaticFnX + nStaticFnWidth;
 	int nEditCirclePosY = nButtonOpenY + nButtonOpenHeight + nCtrlMarginY;
-	int nEditCirclePosWidth = (n3Width / 3) * 2 - nCtrlMarginX * 16;
+	int nEditCirclePosWidth = ((n3Width / 3) * 2 - nCtrlMarginX * 16) * dResolutionRatioX;
 	int nEditCirclePosHeight = nCtrlHeightSize * dResolutionRatioY;
 	m_editCirclePos.SetWindowPos(NULL, nEditCirclePosX, nEditCirclePosY,
 		nEditCirclePosWidth, nEditCirclePosHeight, SWP_NOZORDER | SWP_NOACTIVATE);
@@ -310,15 +314,36 @@ void VIEW_Info::OnInitialUpdate()
 	// [Edit] Circle Radius
 	int nEditCircleRdX = nStaticFnX + nStaticFnWidth;
 	int nEditCircleRdY = nEditCirclePosY + nEditCirclePosHeight + nCtrlMarginY;
-	int nEditCircleRdWidth = (n3Width / 3) * 2 - nCtrlMarginX * 16;
+	int nEditCircleRdWidth = ((n3Width / 3) * 2 - nCtrlMarginX * 16) * dResolutionRatioX;
 	int nEditCircleRdHeight = nCtrlHeightSize * dResolutionRatioY;
 	m_editCircleRadius.SetWindowPos(NULL, nEditCircleRdX, nEditCircleRdY,
 		nEditCircleRdWidth, nEditCircleRdHeight, SWP_NOZORDER | SWP_NOACTIVATE);
 
+	// [GroupBox]  Log
+	int nStaticGroupLogX = 5 * dResolutionRatioX;
+	int nStaticGroupLogY = nEditCircleRdY + nEditCircleRdHeight + nButtonMarginY *8;
+	int nStaticGroupLogWidth = m_dScreenWidth - nStaticGroupStartX * 3;
+	int nStaticGroupLogHeight = m_dScreenHeight -(nStaticGroupHeight + nStaticGroupOpenHeight + nCtrlMarginY * 7);
+	m_staticLog.SetWindowPos(NULL, nStaticGroupLogX, nStaticGroupLogY,
+		nStaticGroupLogWidth, nStaticGroupLogHeight, SWP_NOZORDER | SWP_NOACTIVATE);
 
+	// [Edit] Log
+	int nEditLogX = nStaticGroupLogX + 10;
+	int nEditLogY = nStaticGroupLogY +nButtonMarginY * 6;
+	int nEditLogWidth = nStaticGroupLogWidth -20;
+	int nEditLogHeight = m_dScreenHeight - (nStaticGroupHeight + nStaticGroupOpenHeight + nCtrlMarginY * 10);
+	m_editLog.SetWindowPos(NULL, nEditLogX, nEditLogY, 
+		nEditLogWidth, nEditLogHeight, SWP_NOZORDER | SWP_NOACTIVATE);
 
+	
+	m_editStartPos.SetWindowText(_T("0,0") );
+	m_editEndPos.SetWindowText(_T("100,100") );
+	m_editRandom.SetWindowText(_T("10"));
 }
 
+void VIEW_Info::WriteLog(CString cstr) {
+	m_editLog.ReplaceSel(cstr +_T("\r\n") );
+}
 
 void VIEW_Info::OnBnClickedButton_Draw()
 {
@@ -345,6 +370,10 @@ void VIEW_Info::OnBnClickedButtonRandom()
 		return;
 	}
 	int cnt = _ttoi(cstr);
+	if (cnt > 100) {	// 임시 하드코딩
+		AfxMessageBox(_T("100개 이하 이미지만 생성 가능합니다."));
+		return;
+	}
 
 	// 예외처리 해주기.
 	pMainDlg->Draw_Random(cnt);
@@ -478,3 +507,10 @@ LRESULT VIEW_Info::OpenCircleRadius(WPARAM wparam, LPARAM lparam) {
 
 
 
+
+
+BOOL VIEW_Info::DestroyWindow()
+{
+
+	return CFormView::DestroyWindow();
+}

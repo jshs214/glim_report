@@ -30,14 +30,14 @@
 #define IDC_EDIT_OPEN                   1017
 #define IDC_STATIC_OpenCircle           1018
 #define IDC_EDIT_OPENCIRCLE             1019
-#define IDC_STATIC_GroupOpen2           1020
+#define IDC_STATIC_GroupLog             1020
 #define IDC_STATIC_OpenRadius           1021
 #define IDC_EDIT_OPENRadius             1022
 #define IDC_BUTTON_RANDOM               1023
 #define IDC_STATIC_RANDOM               1024
 #define IDC_EDIT_RANDOM                 1025
-#define IDC_PROGRESS1                   1026
-#define IDC_PROGRESS                    1026
+#define IDC_EDIT1                       1027
+#define IDC_EDIT_LOG                    1027
 
 // Next default values for new objects
 // 
@@ -45,7 +45,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        132
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1027
+#define _APS_NEXT_CONTROL_VALUE         1028
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

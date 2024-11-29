@@ -31,10 +31,6 @@ public:
 
 	void AllocForms();
 
-	
-	
-
-
 protected:
 	HICON m_hIcon;
 
@@ -69,6 +65,8 @@ public:
 	void Draw_Random(int count);
 
 	void OpenBmp(CString cstrPath);
+	
+	CString GetTime();
 
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
