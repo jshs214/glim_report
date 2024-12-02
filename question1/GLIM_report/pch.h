@@ -17,10 +17,12 @@ using namespace std;
 #include "framework.h"
 #include <iostream>
 #include <string>
+#include <fstream>
+#define M_PI 3.141592
 
 const CString PATH_SAVEBMP = _T("./BMP/");
 const CString PATH_DRAWBMP = PATH_SAVEBMP + _T("DRAW/");
-const CString PATH_ACTIONBMP = PATH_SAVEBMP + _T("ACTION/");
+const CString PATH_ACTIONBMP = PATH_SAVEBMP + _T("image/");
 const CString PATH_RANDOMBMP = PATH_SAVEBMP + _T("RANDOM/");
 const CString PATH_LOG = _T("./LOG/");
 const CString FILE_LOG = PATH_LOG + _T("OperatingLog.txt");

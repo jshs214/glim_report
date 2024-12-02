@@ -112,7 +112,8 @@ void VIEW_Image::OpenCImage(CString filePath) {
 	m_nCircleOpenPos.y = (maxY + minY) / 2;
 	m_nCircleOpenRadius = (maxX - minX) /2;
 
-	// 원의 중심을 기준으로 대각선으로 X 표시하기
+
+
 	for (int i = -m_nCircleOpenRadius; i <= m_nCircleOpenRadius; i++) {
 		int x1 = m_nCircleOpenPos.x + i;
 		int y1 = m_nCircleOpenPos.y + i;
@@ -126,11 +127,11 @@ void VIEW_Image::OpenCImage(CString filePath) {
 			fm[x2 + y2 * nPitch] = COLOR_CROSS; 
 	}
 
-	
 
 
 	UpdateDisplay();
 }
+
 
 void VIEW_Image::SaveCImage(CString filePath) {
 	m_image.Save(filePath);
@@ -155,12 +156,12 @@ void VIEW_Image::CircleInImage(int centerX, int centerY, int radius) {
 
 	for (int y = -radius; y < radius; y++) {
 		for (int x = -radius; x < radius; x++) {
-			// 원 내부 점인지 체크
+			
+			// 원 내부 인지
 			if ((x * x) + (y * y) <= radius * radius) {
 				int drawX = centerX + x;
 				int drawY = centerY + y;
 
-				// 예외 처리: 좌표가 유효한지 확인
 				if (drawX >= 0 && drawX < nWidth && drawY >= 0 && drawY < nHeight) {
 					fm[drawY * nPitch + drawX] = COLOR_CIRCLE;
 				}

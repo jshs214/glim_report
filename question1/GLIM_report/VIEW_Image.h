@@ -68,6 +68,7 @@ private:
 	bool m_bIsMoving;
 
 
+
 protected:
 	
 public:

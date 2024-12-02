@@ -48,7 +48,7 @@ private:
 	// for ui (OnTimer)
 	bool m_bFirstLoad =false;
 	bool ParamCheck();
-
+	void WriteLogFile(CString cstr);
 
 public:
 	virtual BOOL DestroyWindow();
@@ -67,6 +67,7 @@ public:
 	void OpenBmp(CString cstrPath);
 	
 	CString GetTime();
+	CString GetFNTime();
 
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };

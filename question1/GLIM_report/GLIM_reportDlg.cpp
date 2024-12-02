@@ -265,10 +265,14 @@ void CGLIMreportDlg::Draw_Circle() {
 	m_pViewImage->DrawCircle(nRadius);
 
 	CString cstr;
-	cstr.Format(PATH_DRAWBMP + _T("%04d.bmp"), 1);
+	cstr.Format(PATH_DRAWBMP + GetFNTime() + _T("draw.bmp"));
+	m_pViewImage->SaveCImage(cstr);
 
-	CString cstrLog = GetTime() + cstr +_T("draw Success");
+	cout << CT2A(cstr);
+
+	CString cstrLog = GetTime() + cstr +_T(" draw Success");
 	m_pViewInfo->WriteLog(cstrLog);
+	WriteLogFile(cstrLog);
 }
 
 void CGLIMreportDlg::MoveCircle_ImageView() {
@@ -281,13 +285,13 @@ void CGLIMreportDlg::MoveCircle_ImageView() {
 		m_pViewImage->MoveCircle();
 
 		CString cstr;
-		cstr.Format(PATH_ACTIONBMP + _T("%04d.bmp"), cnt);	
+		cstr.Format(PATH_ACTIONBMP + GetFNTime() + _T("%04d.bmp"), cnt);
 		cnt++;
-
 		
 		m_pViewImage->SaveCImage(cstr);
-		CString cstrLog = GetTime() + cstr + _T("Action Success");
+		CString cstrLog = GetTime() + cstr + _T(" Action Success");
 		m_pViewInfo->WriteLog(cstrLog);
+		WriteLogFile(cstrLog);
 	}
 }
 
@@ -299,19 +303,42 @@ void CGLIMreportDlg::Draw_Random(int count) {
 		m_pViewImage->DrawRandomCircle();
 
 		CString cstr;
-		cstr.Format(PATH_RANDOMBMP + _T("%04d.bmp"), i);
+		cstr.Format(PATH_RANDOMBMP + GetFNTime() + _T("%04d.bmp"), i);
 
 		m_pViewImage->SaveCImage(cstr);
 
-		CString cstrLog = GetTime() + cstr + _T("Raondom Success");
+		CString cstrLog = GetTime() + cstr + _T(" Random Success");
 		m_pViewInfo->WriteLog(cstrLog);
+		WriteLogFile(cstrLog);
+
 		Sleep(100);	//delay
 	}
 }
 
+void CGLIMreportDlg::WriteLogFile(CString cstr) {
+	
+	string str = CT2A(FILE_LOG);
+	string strLog = CT2A(cstr);
+
+	ofstream file(str, ios::app);
+	if (file.is_open()) {
+		file << strLog +"\n";
+		file.close();
+	}
+	else {
+		AfxMessageBox(_T("OperatingLog ERROR"));
+		return ;
+	}
+
+}
 
 void CGLIMreportDlg::OpenBmp(CString cstrPath) {
 	m_pViewImage->OpenCImage(cstrPath);
+
+	CString cstr = cstrPath;
+	CString cstrLog = GetTime() + cstr + _T(" Open Success");
+	m_pViewInfo->WriteLog(cstrLog);
+	WriteLogFile(cstrLog);
 
 	WPARAM wP = m_pViewImage->GetCircleOpenPos().x;
 	LPARAM lP = m_pViewImage->GetCircleOpenPos().y;
@@ -323,6 +350,11 @@ void CGLIMreportDlg::OpenBmp(CString cstrPath) {
 CString CGLIMreportDlg::GetTime() {
 	CTime currentTime = CTime::GetCurrentTime();
 	CString timeString = currentTime.Format(_T("[%Y-%m-%d %H:%M:%S] "));
+	return timeString;
+}
+CString CGLIMreportDlg::GetFNTime() {
+	CTime currentTime = CTime::GetCurrentTime();
+	CString timeString = currentTime.Format(_T("%y%m%d_%H%M%S"));
 	return timeString;
 }
 
